@@ -95,9 +95,11 @@
         input:hover:not(:focus) {
             border-color: #d1d9e6;
         }
-input::placeholder {
-    color: #eeeee4;
-}
+        
+        input::placeholder {
+            color: #eeeee4;
+        }
+        
         .generated-list {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -124,7 +126,7 @@ input::placeholder {
         }
 
         .list-header::before {
-            content: 'ðŸ"‹';
+            content: 'N';
             font-size: 16px;
             filter: grayscale(1);
         }
@@ -208,7 +210,7 @@ input::placeholder {
         }
 
         .toast::before {
-            content: 'âœ"';
+            content: 'C';
             background: rgba(255, 255, 255, 0.2);
             width: 18px;
             height: 18px;
@@ -453,7 +455,7 @@ input::placeholder {
                 
                 <div class="form-group">
                     <label>Size/Format</label>
-                    <input type="text" id="sizeFormat" list="sizeFormatOptions" placeholder="Select or type size/format..." value="A4">
+                    <input type="text" id="sizeFormat" list="sizeFormatOptions" placeholder="Select or type size/format...">
                     <datalist id="sizeFormatOptions">
                         <option value="A4">
                         <option value="Letter">
@@ -462,7 +464,6 @@ input::placeholder {
                         <option value="2K">
                         <option value="1080p">
                         <option value="1200x1200px">
-                        <option value="200x200px">
                     </datalist>
                 </div>
                 
@@ -496,7 +497,7 @@ input::placeholder {
     <div class="help-popup" id="helpPopup">
         <div class="help-content">
             <button class="help-close" onclick="hideHelp()">×</button>
-            <h2>Nilfisk Naming Generator</h2>
+            <h2>Nilfisk Name Generator</h2>
             
             <div class="help-section">
                 <h3>Features</h3>
