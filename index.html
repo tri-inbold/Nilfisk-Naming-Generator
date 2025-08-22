@@ -100,9 +100,11 @@
         input:hover:not(:focus) {
             border-color: #d1d9e6;
         }
-input::placeholder {
-    color: #eeeee4;
-}
+
+        input::placeholder {
+            color: #eeeee4;
+        }
+        
         .generated-list {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -129,7 +131,7 @@ input::placeholder {
         }
 
         .list-header::before {
-            content: '📋';
+            content: 'ðŸ"‹';
             font-size: 16px;
             filter: grayscale(1);
         }
@@ -213,7 +215,7 @@ input::placeholder {
         }
 
         .toast::before {
-            content: '✓';
+            content: 'âœ"';
             background: rgba(255, 255, 255, 0.2);
             width: 18px;
             height: 18px;
@@ -341,7 +343,7 @@ input::placeholder {
         
         <div class="right-panel">
             <div class="generated-list">
-                <div class="list-header">Generated Names (Enter: Generate | Ctrl+Backspace: Clear | Ctrl+1-0: Copy Line)</div>
+                <div class="list-header">Generated Names (Enter: Generate | Ctrl+Backspace: Clear | Ctrl+1-0: Copy Line | Click: Copy Single Name)</div>
                 <div class="names-container" id="namesList"></div>
             </div>
         </div>
@@ -415,24 +417,52 @@ input::placeholder {
                 document.getElementById('languageCountry').value.trim()
             ];
 
-            // Filter out empty fields and process
+            // Process fields and handle comma-separated values
             const processedFields = fields
                 .filter(field => field !== '')
-                .map(field => field.replace(/\s+/g, '-')) // Replace spaces with dashes
-                .map(field => field.replace(/^-+|-+$/g, '')); // Remove leading/trailing dashes
+                .map(field => field.split(',').map(part => part.trim()).filter(part => part !== '')) // Split by comma and clean first
+                .map(fieldArray => fieldArray.map(field => field.replace(/\s+/g, '-'))) // Replace spaces with dashes
+                .map(fieldArray => fieldArray.map(field => field.replace(/^-+|-+$/g, ''))); // Remove leading/trailing dashes
 
             if (processedFields.length === 0) {
                 return;
             }
 
-            const generatedName = processedFields.join('_');
+            // Generate all combinations
+            const combinations = generateCombinations(processedFields);
+            const newNames = [];
             
-            // Add to list if not already present
-            if (!generatedNames.includes(generatedName)) {
-                generatedNames.unshift(generatedName); // Add to beginning
+            combinations.forEach(combination => {
+                const generatedName = combination.join('_');
+                if (!generatedNames.includes(generatedName)) {
+                    newNames.push(generatedName);
+                    generatedNames.unshift(generatedName);
+                }
+            });
+            
+            if (newNames.length > 0) {
                 updateNamesList();
-                copyToClipboard(generatedName);
+                // Copy all new names at once
+                const allNewNames = newNames.join('\n');
+                copyToClipboard(allNewNames);
             }
+        }
+
+        // Generate all combinations from arrays of options
+        function generateCombinations(arrays) {
+            if (arrays.length === 0) return [];
+            if (arrays.length === 1) return arrays[0].map(item => [item]);
+            
+            const result = [];
+            const restCombinations = generateCombinations(arrays.slice(1));
+            
+            arrays[0].forEach(item => {
+                restCombinations.forEach(combination => {
+                    result.push([item, ...combination]);
+                });
+            });
+            
+            return result;
         }
 
         // Update the names list display
