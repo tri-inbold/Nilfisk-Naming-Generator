@@ -3,6 +3,8 @@
 ## Description
 A sleek, modern web application for generating consistent file naming conventions for Nilfisk marketing materials
 
+https://tri-inbold.github.io/Nilfisk-Naming-Generator/
+
 ## Form Fields
 - MS Number Structure: Project milestone number (e.g., N100)
 - Campaign: Campaign identifier (e.g., DCU)
