@@ -148,6 +148,21 @@
             word-break: break-all;
             position: relative;
             color: #34495e;
+            display: flex;
+            align-items: center;
+        }
+
+        .line-number {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-right: 8px;
+            min-width: 20px;
+            text-align: center;
+            flex-shrink: 0;
         }
 
         .name-item::before {
@@ -244,7 +259,7 @@
                 
                 <div class="form-group">
                     <label>Product Name</label>
-                    <input type="text" id="productName" placeholder="SP100">
+                    <input type="text" id="productName" placeholder="SP1000">
                 </div>
                 
                 <div class="form-group">
@@ -254,7 +269,7 @@
                 
                 <div class="form-group">
                     <label>Asset Type</label>
-                    <input type="text" id="assetType" list="assetTypeOptions" placeholder="Brochure">
+                    <input type="text" id="assetType" list="assetTypeOptions" placeholder="Select or type asset type...">
                     <datalist id="assetTypeOptions">
                         <option value="Brochure">
                         <option value="Carousel Ads">
@@ -292,7 +307,7 @@
                 
                 <div class="form-group">
                     <label>Size/Format</label>
-                    <input type="text" id="sizeFormat" list="sizeFormatOptions" placeholder="A4">
+                    <input type="text" id="sizeFormat" list="sizeFormatOptions" placeholder="Select or type size/format..." value="A4">
                     <datalist id="sizeFormatOptions">
                         <option value="A4">
                         <option value="Letter">
@@ -324,7 +339,7 @@
         
         <div class="right-panel">
             <div class="generated-list">
-                <div class="list-header">Generated Names (Enter: Generate | Ctrl+Backspace: Clear)</div>
+                <div class="list-header">Generated Names (Enter: Generate | Ctrl+Backspace: Clear | Ctrl+1-0: Copy Line)</div>
                 <div class="names-container" id="namesList"></div>
             </div>
         </div>
@@ -349,7 +364,24 @@
                 e.preventDefault();
                 clearAllFields();
             }
+            
+            // Handle Ctrl + Number to copy specific line
+            if (e.ctrlKey && /^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+                const lineNumber = parseInt(e.key);
+                copyLineByNumber(lineNumber);
+            }
         });
+
+        // Copy specific line by number
+        function copyLineByNumber(lineNumber) {
+            if (lineNumber === 0) lineNumber = 10; // Ctrl+0 maps to line 10
+            const lineIndex = lineNumber - 1;
+            
+            if (generatedNames[lineIndex]) {
+                copyToClipboard(generatedNames[lineIndex]);
+            }
+        }
 
         // Clear all form fields function
         function clearAllFields() {
@@ -406,10 +438,14 @@
             const namesList = document.getElementById('namesList');
             namesList.innerHTML = '';
             
-            generatedNames.forEach(name => {
+            generatedNames.forEach((name, index) => {
                 const nameItem = document.createElement('div');
                 nameItem.className = 'name-item';
-                nameItem.textContent = name;
+                
+                // Add line number
+                const lineNumber = index + 1;
+                const displayNumber = lineNumber === 10 ? '0' : lineNumber.toString();
+                nameItem.innerHTML = `<span class="line-number">${displayNumber}</span> ${name}`;
                 nameItem.onclick = () => copyToClipboard(name);
                 namesList.appendChild(nameItem);
             });
