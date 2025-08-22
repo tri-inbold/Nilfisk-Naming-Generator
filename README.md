@@ -1,9 +1,9 @@
 # Nilfisk Naming Generator
 
-##Description
+## Description
 A sleek, modern web application for generating consistent file naming conventions for Nilfisk marketing materials
 
-##Form Fields
+## Form Fields
 - MS Number Structure: Project milestone number (e.g., N100)
 - Campaign: Campaign identifier (e.g., DCU)
 - Product Name: Product identifier (e.g., SP100)
@@ -14,12 +14,12 @@ A sleek, modern web application for generating consistent file naming convention
 - Variation: Version number (e.g., V1)
 - Language-Country: Localization code (e.g., EN-US)
 
-##Keyboard Shortcuts
+## Keyboard Shortcuts
 - Enter: Generate new name and copy to clipboard
 - Ctrl+Backspace: Clear all form fields
 - Ctrl+1-9: Copy lines 1-9 from generated names list
 
-##Feature
+## Feature
 Generated names follow the format: Field1_Field2_Field3_...
 - Empty fields are automatically excluded
 - Spaces in fields are replaced with dashes
