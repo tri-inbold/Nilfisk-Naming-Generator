@@ -1,14 +1,14 @@
 # Nilfisk Naming Generator
 
 ## Description
-A sleek, modern web application for generating consistent file naming conventions for Nilfisk marketing materials
+A web application for generating consistent file naming conventions for Nilfisk marketing materials.
 
 https://tri-inbold.github.io/Nilfisk-Naming-Generator/
 
 ## Form Fields
-- MS Number Structure: Project milestone number (e.g., N100)
-- Campaign: Campaign identifier (e.g., DCU)
-- Product Name: Product identifier (e.g., SP100)
+- MS Number Structure: Project localized number (e.g., N100_000_000)
+- Campaign: Campaign name (e.g., DCU)
+- Product Name: Product name (e.g., SP100)
 - FY: Fiscal year (auto-populated with current year)
 - Asset Type: Type of marketing material (dropdown with options)
 - Size/Format: Document size or format (dropdown with options)
@@ -26,3 +26,7 @@ Generated names follow the format: Field1_Field2_Field3_...
 - Empty fields are automatically excluded
 - Spaces in fields are replaced with dashes
 - All fields are joined with underscores
+- text devide by , will create many names in the same time
+
+## Contact
+tri.vu.trong@inbold.com
