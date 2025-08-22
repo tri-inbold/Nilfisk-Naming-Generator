@@ -490,7 +490,7 @@ input::placeholder {
         
         <div class="right-panel">
             <div class="generated-list">
-                <div class="list-header">Generated Names</div>
+                <div class="list-header">Generated Names (Enter: Generate | Ctrl+Backspace: Clear | Ctrl+1-0: Copy Line | Click: Copy Single Name)</div>
                 <div class="names-container" id="namesList"></div>
             </div>
         </div>
@@ -614,4 +614,105 @@ input::placeholder {
             const combinations = generateCombinations(processedFields);
             const newNames = [];
             
-            combinations.for
+            combinations.forEach(combination => {
+                const generatedName = combination.join('_');
+                if (!generatedNames.includes(generatedName)) {
+                    newNames.push(generatedName);
+                    generatedNames.unshift(generatedName);
+                }
+            });
+            
+            if (newNames.length > 0) {
+                updateNamesList();
+                // Copy all new names at once
+                const allNewNames = newNames.join('\n');
+                copyToClipboard(allNewNames);
+            }
+        }
+
+        // Generate all combinations from arrays of options
+        function generateCombinations(arrays) {
+            if (arrays.length === 0) return [];
+            if (arrays.length === 1) return arrays[0].map(item => [item]);
+            
+            const result = [];
+            const restCombinations = generateCombinations(arrays.slice(1));
+            
+            arrays[0].forEach(item => {
+                restCombinations.forEach(combination => {
+                    result.push([item, ...combination]);
+                });
+            });
+            
+            return result;
+        }
+
+        // Update the names list display
+        function updateNamesList() {
+            const namesList = document.getElementById('namesList');
+            namesList.innerHTML = '';
+            
+            generatedNames.forEach((name, index) => {
+                const nameItem = document.createElement('div');
+                nameItem.className = 'name-item';
+                
+                // Add line number
+                const lineNumber = index + 1;
+                const displayNumber = lineNumber === 10 ? '0' : lineNumber.toString();
+                nameItem.innerHTML = `<span class="line-number">${displayNumber}</span> ${name}`;
+                nameItem.onclick = () => copyToClipboard(name);
+                namesList.appendChild(nameItem);
+            });
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast();
+            });
+        }
+
+        // Show help popup
+        function showHelp() {
+            document.getElementById('helpPopup').classList.add('show');
+        }
+
+        // Hide help popup
+        function hideHelp() {
+            document.getElementById('helpPopup').classList.remove('show');
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('helpPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideHelp();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideHelp();
+            }
+        });
+
+        // Show toast notification
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
