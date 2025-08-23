@@ -644,7 +644,6 @@
                 
                 <div class="tab-content active" id="namesTab">
                     <div class="generated-list">
-                        <div class="list-header">Generated Names</div>
                         <div class="names-container" id="namesList"></div>
                     </div>
                 </div>
@@ -660,4 +659,509 @@
                                     <th onclick="sortTable('code')">Code <span class="sort-arrow">↕</span></th>
                                     <th onclick="sortTable('language')">Language <span class="sort-arrow">↕</span></th>
                                     <th onclick="sortTable('country')">Country <span class="sort-arrow">↕</span></th>
-             
+                                </tr>
+                            </thead>
+                            <tbody id="languageTableBody">
+                                <!-- Language data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="help-button" onclick="showHelp()">?</button>
+
+    <div class="help-popup" id="helpPopup">
+        <div class="help-content">
+            <button class="help-close" onclick="hideHelp()">×</button>
+            <h2>Nilfisk Naming Generator</h2>
+            
+            <div class="help-section">
+                <h3>Features</h3>
+                <ul>
+                    <li>Join all text from fields with _</li>
+                    <li>Replace hard space with -</li>
+                    <li>Generate names from text divided by ,</li>
+                    <li>Auto select common size of asset</li>
+                    <li>Language code picker with search and sort</li>
+                </ul>
+            </div>
+            
+            <div class="help-section">
+                <h3>Shortcuts</h3>
+                <ul>
+                    <li>Enter: generate name</li>
+                    <li>Ctrl+Backspace: clear form</li>
+                    <li>Ctrl+1-0: copy single name line</li>
+                    <li>Click on name: copy single name</li>
+                    <li>Click on language row: add to Language-Country field</li>
+                </ul>
+            </div>
+            
+            <div class="help-section">
+                <div class="contact-info">
+                    <a href="mailto:tri.vu.trong@inbold.com">tri.vu.trong@inbold.com</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <script>
+        // Language data
+        const languageData = [
+            { code: 'EN-MASTER', language: 'English US', country: 'Global' },
+            { code: 'ES-AR', language: 'Spanish', country: 'Argentina' },
+            { code: 'EN-AU', language: 'English', country: 'Australia' },
+            { code: 'DE-AT', language: 'German', country: 'Austria' },
+            { code: 'EN-BH', language: 'English', country: 'Bahrain' },
+            { code: 'NL-BE', language: 'Dutch', country: 'Belgium' },
+            { code: 'FR-BE', language: 'French', country: 'Belgium' },
+            { code: 'EN-BG', language: 'English', country: 'Bulgaria' },
+            { code: 'EN-CA', language: 'English', country: 'Canada' },
+            { code: 'FR-CA', language: 'French', country: 'Canada' },
+            { code: 'ES-CL', language: 'Spanish', country: 'Chile' },
+            { code: 'ZH-CN', language: 'Chinese', country: 'China' },
+            { code: 'EN-HR', language: 'English', country: 'Croatia' },
+            { code: 'CS-CZ', language: 'Czech', country: 'Czech Republic' },
+            { code: 'DA-DK', language: 'Danish', country: 'Denmark' },
+            { code: 'EN-EG', language: 'English', country: 'Egypt' },
+            { code: 'EN-EE', language: 'English', country: 'Estonia' },
+            { code: 'FI-FI', language: 'Finnish', country: 'Finland' },
+            { code: 'FR-FR', language: 'French', country: 'France' },
+            { code: 'DE-DE', language: 'German', country: 'Germany' },
+            { code: 'EL-GR', language: 'Greek', country: 'Greece' },
+            { code: 'HU-HU', language: 'Hungarian', country: 'Hungary' },
+            { code: 'EN-IN', language: 'English', country: 'India' },
+            { code: 'EN-IR', language: 'English', country: 'Iran' },
+            { code: 'EN-IE', language: 'English', country: 'Ireland' },
+            { code: 'IT-IT', language: 'Italian', country: 'Italy' },
+            { code: 'EN-CI', language: 'English', country: 'Ivory Coast' },
+            { code: 'JA-JP', language: 'Japanese', country: 'Japan' },
+            { code: 'KO-KR', language: 'Korean', country: 'Korea' },
+            { code: 'AR-KW', language: 'Arabic', country: 'Kuwait' },
+            { code: 'LV-LV', language: 'Latvian', country: 'Latvia' },
+            { code: 'EN-LB', language: 'English', country: 'Lebanon' },
+            { code: 'EN-LT', language: 'English', country: 'Lithuania' },
+            { code: 'LT-LT', language: 'Lithuanian', country: 'Lithuania' },
+            { code: 'EN-MY', language: 'English', country: 'Malaysia' },
+            { code: 'EN-MA', language: 'English', country: 'Morocco' },
+            { code: 'ES-MX', language: 'Spanish', country: 'Mexico' },
+            { code: 'NL-NL', language: 'Dutch', country: 'Netherlands' },
+            { code: 'EN-NZ', language: 'English', country: 'New Zealand' },
+            { code: 'EN-NG', language: 'English', country: 'Nigeria' },
+            { code: 'NB-NO', language: 'Norwegian', country: 'Norway' },
+            { code: 'AR-OM', language: 'Arabic', country: 'Oman' },
+            { code: 'ES-PE', language: 'Spanish', country: 'Peru' },
+            { code: 'PL-PL', language: 'Polish', country: 'Poland' },
+            { code: 'PT-PT', language: 'Portuguese', country: 'Portugal' },
+            { code: 'EN-QA', language: 'English', country: 'Qatar' },
+            { code: 'EN-RO', language: 'English', country: 'Romania' },
+            { code: 'RO-RO', language: 'Romanian', country: 'Romania' },
+            { code: 'RU-RU', language: 'Russian', country: 'Russia' },
+            { code: 'EN-SA', language: 'English', country: 'Saudi Arabia' },
+            { code: 'EN-SG', language: 'English', country: 'Singapore' },
+            { code: 'EN-SK', language: 'English', country: 'Slovakia' },
+            { code: 'KO-KR', language: 'Korean', country: 'South Korea' },
+            { code: 'ES-ES', language: 'Spanish', country: 'Spain' },
+            { code: 'SV-SE', language: 'Swedish', country: 'Sweden' },
+            { code: 'DE-CH', language: 'German', country: 'Switzerland' },
+            { code: 'FR-CH', language: 'French', country: 'Switzerland' },
+            { code: 'TH-TH', language: 'Thai', country: 'Thailand' },
+            { code: 'EN-TH', language: 'English', country: 'Thailand' },
+            { code: 'TR-TR', language: 'Turkish', country: 'Turkey' },
+            { code: 'EN-AE', language: 'English', country: 'UAE' },
+            { code: 'EN-GB', language: 'English', country: 'UK' },
+            { code: 'UK-UA', language: 'Russian', country: 'Ukraine' },
+            { code: 'EN-US', language: 'English', country: 'USA' }
+        ];
+
+        let filteredLanguageData = [...languageData];
+        let sortColumn = '';
+        let sortDirection = 'asc';
+        let selectedLanguages = [];
+
+        // Auto-select size based on asset type
+        const assetTypeSizeMapping = {
+            'Brochure': 'A4',
+            'Carousel Ads': '1200x1200px',
+            'Rollup': '85x200cm',
+            'Fact sheet': 'A4',
+            'Online banners': '300x300px, 250x250px, 300x600px, 728x90px, 300x250px, 160x600px',
+            'Powerpoint': '16:9',
+            'SoMe': '1200x1200px',
+            'Desktop background': '1920x1080px',
+            'Teams background': '1920x1080px',
+            'Emails': '600x600px',
+            'Image': '',
+            'Sales demo video': '4k',
+            'QSG video': '1080p',
+            'Email signature': '600x278px',
+            'Landing page': '1920x1080px',
+            'Frontpage tile': '728x600px',
+            'Service poster': 'A4',
+            'FAQ': 'A4',
+            'One pager': 'A4',
+            'Articles': 'A4',
+            'Shelf wobler': '10x10cm',
+            'Ebook': 'A4',
+            'Case Study': 'A4',
+            'Policy': 'A4',
+            'Business Cards': '9x5cm',
+            'Employee IDs': '8.6x5.4cm',
+            'Certificate': 'A4',
+            'Name tags': '7.5x4cm',
+            'Exhibition': '',
+            'Advertisements': 'A4',
+            'Sticker': '5x5cm'
+        };
+
+        const generatedNames = [];
+
+        // Initialize language table
+        function initializeLanguageTable() {
+            populateLanguageTable();
+        }
+
+        // Populate language table
+        function populateLanguageTable() {
+            const tableBody = document.getElementById('languageTableBody');
+            tableBody.innerHTML = '';
+            
+            filteredLanguageData.forEach(lang => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${lang.code}</td>
+                    <td>${lang.language}</td>
+                    <td>${lang.country}</td>
+                `;
+                row.addEventListener('click', () => selectLanguage(lang.code));
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Select language
+        function selectLanguage(code) {
+            const languageCountryInput = document.getElementById('languageCountry');
+            const currentValue = languageCountryInput.value.trim();
+            
+            if (currentValue === '') {
+                languageCountryInput.value = code;
+            } else {
+                const codes = currentValue.split(',').map(c => c.trim());
+                if (!codes.includes(code)) {
+                    languageCountryInput.value = currentValue + ', ' + code;
+                }
+            }
+            
+            // Update selected languages for visual feedback
+            selectedLanguages = languageCountryInput.value.split(',').map(c => c.trim()).filter(c => c !== '');
+            updateTableSelection();
+        }
+
+        // Update table selection visual feedback
+        function updateTableSelection() {
+            const rows = document.querySelectorAll('#languageTableBody tr');
+            rows.forEach(row => {
+                const code = row.cells[0].textContent;
+                if (selectedLanguages.includes(code)) {
+                    row.classList.add('selected');
+                } else {
+                    row.classList.remove('selected');
+                }
+            });
+        }
+
+        // Sort table
+        function sortTable(column) {
+            const headers = document.querySelectorAll('.language-table th');
+            headers.forEach(h => h.classList.remove('sorted'));
+            
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            
+            const header = event.target.closest('th');
+            header.classList.add('sorted');
+            const arrow = header.querySelector('.sort-arrow');
+            arrow.textContent = sortDirection === 'asc' ? '↑' : '↓';
+            
+            filteredLanguageData.sort((a, b) => {
+                let aVal = a[column].toLowerCase();
+                let bVal = b[column].toLowerCase();
+                
+                if (sortDirection === 'asc') {
+                    return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+                } else {
+                    return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+                }
+            });
+            
+            populateLanguageTable();
+            updateTableSelection();
+        }
+
+        // Search languages
+        function searchLanguages() {
+            const searchTerm = document.getElementById('languageSearch').value.toLowerCase();
+            
+            filteredLanguageData = languageData.filter(lang => 
+                lang.code.toLowerCase().includes(searchTerm) ||
+                lang.language.toLowerCase().includes(searchTerm) ||
+                lang.country.toLowerCase().includes(searchTerm)
+            );
+            
+            populateLanguageTable();
+            updateTableSelection();
+        }
+
+        // Switch tabs
+        function switchTab(tabName) {
+            // Remove active class from all tabs and buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab and button
+            if (tabName === 'names') {
+                document.querySelector('.tab-button:first-child').classList.add('active');
+                document.getElementById('namesTab').classList.add('active');
+            } else if (tabName === 'languages') {
+                document.querySelector('.tab-button:last-child').classList.add('active');
+                document.getElementById('languagesTab').classList.add('active');
+            }
+        }
+
+        // Handle asset type change
+        document.getElementById('assetType').addEventListener('change', function() {
+            const selectedAssetType = this.value;
+            const sizeInput = document.getElementById('sizeFormat');
+            
+            if (assetTypeSizeMapping[selectedAssetType]) {
+                sizeInput.value = assetTypeSizeMapping[selectedAssetType];
+            }
+        });
+
+        // Also handle input event for when user types
+        document.getElementById('assetType').addEventListener('input', function() {
+            const selectedAssetType = this.value;
+            const sizeInput = document.getElementById('sizeFormat');
+            
+            if (assetTypeSizeMapping[selectedAssetType]) {
+                sizeInput.value = assetTypeSizeMapping[selectedAssetType];
+            }
+        });
+
+        // Handle language search
+        document.getElementById('languageSearch').addEventListener('input', searchLanguages);
+
+        // Handle language-country input changes to update selection
+        document.getElementById('languageCountry').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+            selectedLanguages = this.value.split(',').map(c => c.trim()).filter(c => c !== '');
+            updateTableSelection();
+        });
+
+        // Handle uppercase conversion for MS Number and Variation
+        document.getElementById('msNumber').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+
+        document.getElementById('variation').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+
+        // Set current year as default
+        document.getElementById('fy').value = new Date().getFullYear().toString();
+
+        // Handle enter key to generate name and ctrl+backspace to clear form
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generateName();
+            }
+            
+            if (e.ctrlKey && e.key === 'Backspace') {
+                e.preventDefault();
+                clearAllFields();
+            }
+            
+            // Handle Ctrl + Number to copy specific line
+            if (e.ctrlKey && /^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+                const lineNumber = parseInt(e.key);
+                copyLineByNumber(lineNumber);
+            }
+        });
+
+        // Copy specific line by number
+        function copyLineByNumber(lineNumber) {
+            if (lineNumber === 0) lineNumber = 10; // Ctrl+0 maps to line 10
+            const lineIndex = lineNumber - 1;
+            
+            if (generatedNames[lineIndex]) {
+                copyToClipboard(generatedNames[lineIndex]);
+            }
+        }
+
+        // Clear all form fields function
+        function clearAllFields() {
+            document.getElementById('msNumber').value = '';
+            document.getElementById('campaign').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('fy').value = new Date().getFullYear().toString(); // Keep current year
+            document.getElementById('assetType').value = '';
+            document.getElementById('sizeFormat').value = 'A4'; // Keep A4 default
+            document.getElementById('specs').value = '';
+            document.getElementById('variation').value = '';
+            document.getElementById('languageCountry').value = '';
+            
+            // Clear selected languages
+            selectedLanguages = [];
+            updateTableSelection();
+            
+            // Focus on first field
+            document.getElementById('msNumber').focus();
+        }
+
+        // Generate name function
+        function generateName() {
+            const fields = [
+                document.getElementById('msNumber').value.trim().toUpperCase(),
+                document.getElementById('campaign').value.trim(),
+                document.getElementById('productName').value.trim(),
+                document.getElementById('fy').value.trim(),
+                document.getElementById('assetType').value.trim(),
+                document.getElementById('sizeFormat').value.trim(),
+                document.getElementById('specs').value.trim(),
+                document.getElementById('variation').value.trim().toUpperCase(),
+                document.getElementById('languageCountry').value.trim().toUpperCase()
+            ];
+
+            // Process fields and handle comma-separated values
+            const processedFields = fields
+                .filter(field => field !== '')
+                .map(field => field.split(',').map(part => part.trim()).filter(part => part !== '')) // Split by comma and clean first
+                .map(fieldArray => fieldArray.map(field => field.replace(/\s+/g, '-'))) // Replace spaces with dashes
+                .map(fieldArray => fieldArray.map(field => field.replace(/^-+|-+$/g, ''))); // Remove leading/trailing dashes
+
+            if (processedFields.length === 0) {
+                return;
+            }
+
+            // Generate all combinations
+            const combinations = generateCombinations(processedFields);
+            const newNames = [];
+            
+            combinations.forEach(combination => {
+                const generatedName = combination.join('_');
+                if (!generatedNames.includes(generatedName)) {
+                    newNames.push(generatedName);
+                    generatedNames.unshift(generatedName);
+                }
+            });
+            
+            if (newNames.length > 0) {
+                updateNamesList();
+                // Copy all new names at once
+                const allNewNames = newNames.join('\n');
+                copyToClipboard(allNewNames);
+            }
+        }
+
+        // Generate all combinations from arrays of options
+        function generateCombinations(arrays) {
+            if (arrays.length === 0) return [];
+            if (arrays.length === 1) return arrays[0].map(item => [item]);
+            
+            const result = [];
+            const restCombinations = generateCombinations(arrays.slice(1));
+            
+            arrays[0].forEach(item => {
+                restCombinations.forEach(combination => {
+                    result.push([item, ...combination]);
+                });
+            });
+            
+            return result;
+        }
+
+        // Update the names list display
+        function updateNamesList() {
+            const namesList = document.getElementById('namesList');
+            namesList.innerHTML = '';
+            
+            generatedNames.forEach((name, index) => {
+                const nameItem = document.createElement('div');
+                nameItem.className = 'name-item';
+                
+                // Add line number
+                const lineNumber = index + 1;
+                const displayNumber = lineNumber === 10 ? '0' : lineNumber.toString();
+                nameItem.innerHTML = `<span class="line-number">${displayNumber}</span> ${name}`;
+                nameItem.onclick = () => copyToClipboard(name);
+                namesList.appendChild(nameItem);
+            });
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast();
+            });
+        }
+
+        // Show help popup
+        function showHelp() {
+            document.getElementById('helpPopup').classList.add('show');
+        }
+
+        // Hide help popup
+        function hideHelp() {
+            document.getElementById('helpPopup').classList.remove('show');
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('helpPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideHelp();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideHelp();
+            }
+        });
+
+        // Show toast notification
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeLanguageTable();
+        });
+    </script>
+</body>
+</html>
