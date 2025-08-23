@@ -2,7 +2,6 @@
 
 ## Description
 A web application for generating consistent file naming conventions for Nilfisk marketing materials.
-
 https://tri-inbold.github.io/Nilfisk-Naming-Generator/
 
 ## Form Fields
@@ -17,9 +16,11 @@ https://tri-inbold.github.io/Nilfisk-Naming-Generator/
 - Language-Country: Localization code (e.g., EN-US)
 
 ## Keyboard Shortcuts
-- Enter: Generate new name and copy to clipboard
-- Ctrl+Backspace: Clear all form fields
-- Ctrl+1-9: Copy lines 1-9 from generated names list
+- Enter: generate name
+- Ctrl+Backspace: clear form
+- Ctrl+1-0: copy single name line
+- Click on name: copy single name
+- Click on language row: add to Language-Country field
 
 ## Feature
 Generated names follow the format: Field1_Field2_Field3_...
@@ -27,6 +28,17 @@ Generated names follow the format: Field1_Field2_Field3_...
 - Spaces in fields are replaced with dashes
 - All fields are joined with underscores
 - text devide by , will create many names in the same time
+
+## Update summary
+Version 3.0
+- Improve feature
+- Create country panel
+Version 2.0
+- Create 2 panel with help
+- Auto-mapping
+Version 1.0
+- Basic feature
+- Shortcut
 
 ## Contact
 tri.vu.trong@inbold.com
