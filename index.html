@@ -99,13 +99,74 @@
         input::placeholder {
             color: #eeeee4;
         }
-        
-        .generated-list {
+
+        /* Uppercase inputs */
+        #msNumber, #variation, #languageCountry {
+            text-transform: uppercase;
+        }
+
+        /* Tab styles */
+        .tabs-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .tabs-header {
+            display: flex;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #5a6c7d;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-button:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        .tab-button:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            border-bottom-color: #667eea;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-content {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+        
+        .generated-list {
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -118,7 +179,6 @@
             font-weight: 500;
             color: #2c3e50;
             font-size: 14px;
-            background: rgba(102, 126, 234, 0.05);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -188,6 +248,88 @@
 
         .name-item:last-child {
             border-bottom: none;
+        }
+
+        /* Language table styles */
+        .language-controls {
+            padding: 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            flex-shrink: 0;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e8ecf4;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .language-table-container {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .language-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .language-table th {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 500;
+            color: #2c3e50;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .language-table th:hover {
+            background: rgba(102, 126, 234, 0.15);
+        }
+
+        .language-table th .sort-arrow {
+            margin-left: 4px;
+            opacity: 0.5;
+            transition: opacity 0.2s ease;
+        }
+
+        .language-table th.sorted .sort-arrow {
+            opacity: 1;
+        }
+
+        .language-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            color: #34495e;
+        }
+
+        .language-table tr {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .language-table tr:hover {
+            background: rgba(102, 126, 234, 0.08);
+        }
+
+        .language-table tr.selected {
+            background: rgba(102, 126, 234, 0.15);
         }
 
         .toast {
@@ -494,285 +636,28 @@
         </div>
         
         <div class="right-panel">
-            <div class="generated-list">
-                <div class="list-header">Generated Names</div>
-                <div class="names-container" id="namesList"></div>
-            </div>
-        </div>
-    </div>
-
-    <button class="help-button" onclick="showHelp()">?</button>
-
-    <div class="help-popup" id="helpPopup">
-        <div class="help-content">
-            <button class="help-close" onclick="hideHelp()">×</button>
-            <h2>Nilfisk Naming Generator</h2>
-            
-            <div class="help-section">
-                <h3>Features</h3>
-                <ul>
-                    <li>Join all text from fields with _</li>
-                    <li>Replace hard space with -</li>
-                    <li>Generate names from text divided by ,</li>
-                    <li>Auto select common size of asset</li>
-                </ul>
-            </div>
-            
-            <div class="help-section">
-                <h3>Shortcuts</h3>
-                <ul>
-                    <li>Enter: generate name</li>
-                    <li>Ctrl+Backspace: clear form</li>
-                    <li>Ctrl+1-0: copy single name line</li>
-                    <li>Click on name: copy single name</li>
-                </ul>
-            </div>
-            
-            <div class="help-section">
-                <div class="contact-info">
-                    <a href="mailto:tri.vu.trong@inbold.com">tri.vu.trong@inbold.com</a>
+            <div class="tabs-container">
+                <div class="tabs-header">
+                    <button class="tab-button active" onclick="switchTab('names')">Generated Names</button>
+                    <button class="tab-button" onclick="switchTab('languages')">Language Codes</button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="toast" id="toast">Copied to clipboard!</div>
-
-    <script>
-        // Auto-select size based on asset type
-        const assetTypeSizeMapping = {
-            'Brochure': 'A4',
-            'Carousel Ads': '1200x1200px',
-            'Rollup': '85x200cm',
-            'Fact sheet': 'A4',
-            'Online banners': '300x300px, 250x250px, 300x600px, 728x90px, 300x250px, 160x600px',
-            'Powerpoint': '16:9',
-            'SoMe': '1200x1200px',
-            'Desktop background': '1920x1080px',
-            'Teams background': '1920x1080px',
-            'Emails': '600x600px',
-            'Image': '',
-            'Sales demo video': '4k',
-            'QSG video': '1080p',
-            'Email signature': '600x278px',
-            'Landing page': '1920x1080px',
-            'Frontpage tile': '728x600px',
-            'Service poster': 'A4',
-            'FAQ': 'A4',
-            'One pager': 'A4',
-            'Articles': 'A4',
-            'Shelf wobler': '10x10cm',
-            'Ebook': 'A4',
-            'Case Study': 'A4',
-            'Policy': 'A4',
-            'Business Cards': '9x5cm',
-            'Employee IDs': '8.6x5.4cm',
-            'Certificate': 'A4',
-            'Name tags': '7.5x4cm',
-            'Exhibition': '',
-            'Advertisements': 'A4',
-            'Sticker': '5x5cm'
-        };
-
-        // Handle asset type change
-        document.getElementById('assetType').addEventListener('change', function() {
-            const selectedAssetType = this.value;
-            const sizeInput = document.getElementById('sizeFormat');
-            
-            if (assetTypeSizeMapping[selectedAssetType]) {
-                sizeInput.value = assetTypeSizeMapping[selectedAssetType];
-            }
-        });
-
-        // Also handle input event for when user types
-        document.getElementById('assetType').addEventListener('input', function() {
-            const selectedAssetType = this.value;
-            const sizeInput = document.getElementById('sizeFormat');
-            
-            if (assetTypeSizeMapping[selectedAssetType]) {
-                sizeInput.value = assetTypeSizeMapping[selectedAssetType];
-            }
-        });
-
-        // Set current year as default
-        document.getElementById('fy').value = new Date().getFullYear().toString();
-
-        const generatedNames = [];
-
-        // Handle enter key to generate name and ctrl+backspace to clear form
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                generateName();
-            }
-            
-            if (e.ctrlKey && e.key === 'Backspace') {
-                e.preventDefault();
-                clearAllFields();
-            }
-            
-            // Handle Ctrl + Number to copy specific line
-            if (e.ctrlKey && /^[0-9]$/.test(e.key)) {
-                e.preventDefault();
-                const lineNumber = parseInt(e.key);
-                copyLineByNumber(lineNumber);
-            }
-        });
-
-        // Copy specific line by number
-        function copyLineByNumber(lineNumber) {
-            if (lineNumber === 0) lineNumber = 10; // Ctrl+0 maps to line 10
-            const lineIndex = lineNumber - 1;
-            
-            if (generatedNames[lineIndex]) {
-                copyToClipboard(generatedNames[lineIndex]);
-            }
-        }
-
-        // Clear all form fields function
-        function clearAllFields() {
-            document.getElementById('msNumber').value = '';
-            document.getElementById('campaign').value = '';
-            document.getElementById('productName').value = '';
-            document.getElementById('fy').value = new Date().getFullYear().toString(); // Keep current year
-            document.getElementById('assetType').value = '';
-            document.getElementById('sizeFormat').value = 'A4'; // Keep A4 default
-            document.getElementById('specs').value = '';
-            document.getElementById('variation').value = '';
-            document.getElementById('languageCountry').value = '';
-            
-            // Focus on first field
-            document.getElementById('msNumber').focus();
-        }
-
-        // Generate name function
-        function generateName() {
-            const fields = [
-                document.getElementById('msNumber').value.trim(),
-                document.getElementById('campaign').value.trim(),
-                document.getElementById('productName').value.trim(),
-                document.getElementById('fy').value.trim(),
-                document.getElementById('assetType').value.trim(),
-                document.getElementById('sizeFormat').value.trim(),
-                document.getElementById('specs').value.trim(),
-                document.getElementById('variation').value.trim(),
-                document.getElementById('languageCountry').value.trim()
-            ];
-
-            // Process fields and handle comma-separated values
-            const processedFields = fields
-                .filter(field => field !== '')
-                .map(field => field.split(',').map(part => part.trim()).filter(part => part !== '')) // Split by comma and clean first
-                .map(fieldArray => fieldArray.map(field => field.replace(/\s+/g, '-'))) // Replace spaces with dashes
-                .map(fieldArray => fieldArray.map(field => field.replace(/^-+|-+$/g, ''))); // Remove leading/trailing dashes
-
-            if (processedFields.length === 0) {
-                return;
-            }
-
-            // Generate all combinations
-            const combinations = generateCombinations(processedFields);
-            const newNames = [];
-            
-            combinations.forEach(combination => {
-                const generatedName = combination.join('_');
-                if (!generatedNames.includes(generatedName)) {
-                    newNames.push(generatedName);
-                    generatedNames.unshift(generatedName);
-                }
-            });
-            
-            if (newNames.length > 0) {
-                updateNamesList();
-                // Copy all new names at once
-                const allNewNames = newNames.join('\n');
-                copyToClipboard(allNewNames);
-            }
-        }
-
-        // Generate all combinations from arrays of options
-        function generateCombinations(arrays) {
-            if (arrays.length === 0) return [];
-            if (arrays.length === 1) return arrays[0].map(item => [item]);
-            
-            const result = [];
-            const restCombinations = generateCombinations(arrays.slice(1));
-            
-            arrays[0].forEach(item => {
-                restCombinations.forEach(combination => {
-                    result.push([item, ...combination]);
-                });
-            });
-            
-            return result;
-        }
-
-        // Update the names list display
-        function updateNamesList() {
-            const namesList = document.getElementById('namesList');
-            namesList.innerHTML = '';
-            
-            generatedNames.forEach((name, index) => {
-                const nameItem = document.createElement('div');
-                nameItem.className = 'name-item';
                 
-                // Add line number
-                const lineNumber = index + 1;
-                const displayNumber = lineNumber === 10 ? '0' : lineNumber.toString();
-                nameItem.innerHTML = `<span class="line-number">${displayNumber}</span> ${name}`;
-                nameItem.onclick = () => copyToClipboard(name);
-                namesList.appendChild(nameItem);
-            });
-        }
-
-        // Copy to clipboard function
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast();
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                showToast();
-            });
-        }
-
-        // Show help popup
-        function showHelp() {
-            document.getElementById('helpPopup').classList.add('show');
-        }
-
-        // Hide help popup
-        function hideHelp() {
-            document.getElementById('helpPopup').classList.remove('show');
-        }
-
-        // Close popup when clicking outside
-        document.getElementById('helpPopup').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideHelp();
-            }
-        });
-
-        // Close popup with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                hideHelp();
-            }
-        });
-
-        // Show toast notification
-        function showToast() {
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
-        }
-    </script>
-</body>
-</html>
+                <div class="tab-content active" id="namesTab">
+                    <div class="generated-list">
+                        <div class="list-header">Generated Names</div>
+                        <div class="names-container" id="namesList"></div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="languagesTab">
+                    <div class="language-controls">
+                        <input type="text" class="search-input" id="languageSearch" placeholder="Search languages...">
+                    </div>
+                    <div class="language-table-container">
+                        <table class="language-table">
+                            <thead>
+                                <tr>
+                                    <th onclick="sortTable('code')">Code <span class="sort-arrow">↕</span></th>
+                                    <th onclick="sortTable('language')">Language <span class="sort-arrow">↕</span></th>
+                                    <th onclick="sortTable('country')">Country <span class="sort-arrow">↕</span></th>
+             
