@@ -210,7 +210,7 @@
         }
 
         .toast::before {
-            content: 'C';
+            content: '+';
             background: rgba(255, 255, 255, 0.2);
             width: 18px;
             height: 18px;
@@ -455,7 +455,7 @@
                 
                 <div class="form-group">
                     <label>Size/Format</label>
-                    <input type="text" id="sizeFormat" list="sizeFormatOptions" placeholder="Select or type size/format...">
+                    <input type="text" id="sizeFormat" list="sizeFormatOptions" placeholder="Select or type size/format..." value="A4">
                     <datalist id="sizeFormatOptions">
                         <option value="A4">
                         <option value="Letter">
@@ -463,7 +463,16 @@
                         <option value="4K">
                         <option value="2K">
                         <option value="1080p">
+                        <option value="1920x1080px">
                         <option value="1200x1200px">
+                        <option value="1080x1080px">
+                        <option value="728x90px">
+                        <option value="85x200cm">
+                        <option value="10x10cm">
+                        <option value="9x5cm">
+                        <option value="8.6x5.4cm">
+                        <option value="7.5x4cm">
+                        <option value="5x5cm">
                     </datalist>
                 </div>
                 
@@ -486,7 +495,7 @@
         
         <div class="right-panel">
             <div class="generated-list">
-                <div class="list-header">Generated Names</div>
+                <div class="list-header">Generated Names (Enter: Generate | Ctrl+Backspace: Clear | Ctrl+1-0: Copy Line | Click: Copy Single Name)</div>
                 <div class="names-container" id="namesList"></div>
             </div>
         </div>
@@ -497,7 +506,7 @@
     <div class="help-popup" id="helpPopup">
         <div class="help-content">
             <button class="help-close" onclick="hideHelp()">×</button>
-            <h2>Nilfisk Name Generator</h2>
+            <h2>Nilfisk Naming Generator</h2>
             
             <div class="help-section">
                 <h3>Features</h3>
@@ -505,6 +514,7 @@
                     <li>Join all text from fields with _</li>
                     <li>Replace hard space with -</li>
                     <li>Generate names from text divided by ,</li>
+                    <li>Auto select common size of asset</li>
                 </ul>
             </div>
             
@@ -519,7 +529,6 @@
             </div>
             
             <div class="help-section">
-                <h3>Contact</h3>
                 <div class="contact-info">
                     <a href="mailto:tri.vu.trong@inbold.com">tri.vu.trong@inbold.com</a>
                 </div>
@@ -530,6 +539,61 @@
     <div class="toast" id="toast">Copied to clipboard!</div>
 
     <script>
+        // Auto-select size based on asset type
+        const assetTypeSizeMapping = {
+            'Brochure': 'A4',
+            'Carousel Ads': '1200x1200px',
+            'Rollup': '85x200cm',
+            'Fact sheet': 'A4',
+            'Online banners': '300x300px, 250x250px, 300x600px, 728x90px, 300x250px, 160x600px',
+            'Powerpoint': '16:9',
+            'SoMe': '1200x1200px',
+            'Desktop background': '1920x1080px',
+            'Teams background': '1920x1080px',
+            'Emails': '600x600px',
+            'Image': '',
+            'Sales demo video': '4k',
+            'QSG video': '1080p',
+            'Email signature': '600x278px',
+            'Landing page': '1920x1080px',
+            'Frontpage tile': '728x600px',
+            'Service poster': 'A4',
+            'FAQ': 'A4',
+            'One pager': 'A4',
+            'Articles': 'A4',
+            'Shelf wobler': '10x10cm',
+            'Ebook': 'A4',
+            'Case Study': 'A4',
+            'Policy': 'A4',
+            'Business Cards': '9x5cm',
+            'Employee IDs': '8.6x5.4cm',
+            'Certificate': 'A4',
+            'Name tags': '7.5x4cm',
+            'Exhibition': '',
+            'Advertisements': 'A4',
+            'Sticker': '5x5cm'
+        };
+
+        // Handle asset type change
+        document.getElementById('assetType').addEventListener('change', function() {
+            const selectedAssetType = this.value;
+            const sizeInput = document.getElementById('sizeFormat');
+            
+            if (assetTypeSizeMapping[selectedAssetType]) {
+                sizeInput.value = assetTypeSizeMapping[selectedAssetType];
+            }
+        });
+
+        // Also handle input event for when user types
+        document.getElementById('assetType').addEventListener('input', function() {
+            const selectedAssetType = this.value;
+            const sizeInput = document.getElementById('sizeFormat');
+            
+            if (assetTypeSizeMapping[selectedAssetType]) {
+                sizeInput.value = assetTypeSizeMapping[selectedAssetType];
+            }
+        });
+
         // Set current year as default
         document.getElementById('fy').value = new Date().getFullYear().toString();
 
