@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nilfisk Naming Generator</title>
+    <link rel="stylesheet" href="style.css">
+	<meta charset="UTF-8">
+</head>
+<body class="popup-mode">
+    <div class="container popup-container">
+        <div class="form-container">
+            <div class="form-group">
+                <label>MS Number Structure</label>
+                <input type="text" id="msNumber" placeholder="N100">
+            </div>
+            <div class="form-group">
+                <label>Campaign</label>
+                <input type="text" id="campaign" placeholder="DCU">
+            </div>
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" id="productName" placeholder="SP1000">
+            </div>
+            <div class="form-group">
+                <label>FY</label>
+                <input type="text" id="fy" placeholder="Year">
+            </div>
+            <div class="form-group">
+                <label>Asset Type</label>
+                <input type="text" id="assetType" list="assetTypeOptions" placeholder="e.g., Brochure, Powerpoint...">
+            </div>
+            <div class="form-group">
+                <label>Size/Format</label>
+                <input type="text" id="sizeFormat" placeholder="A4">
+            </div>
+            <div class="form-group">
+                <label>Specs</label>
+                <input type="text" id="specs" placeholder="Industry">
+            </div>
+            <div class="form-group">
+                <label>Variation</label>
+                <input type="text" id="variation" placeholder="V1">
+            </div>
+            <div class="form-group">
+                <label>Language-Country</label>
+                <input type="text" id="languageCountry" placeholder="EN-US">
+            </div>
+            <!-- Datalist cho Asset Type -->
+            <datalist id="assetTypeOptions">
+                <!-- Các tùy chọn sẽ được thêm vào đây bằng JavaScript -->
+            </datalist>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="main.js"></script>
+</body>
+</html>

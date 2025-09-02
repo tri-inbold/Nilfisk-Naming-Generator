@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nilfisk Naming Generator</title>
+    <link rel="stylesheet" href="style.css">
+	<meta charset="UTF-8">
+</head>
+<body>
+    <div class="container sidebar-container">
+        <!-- Panel trên: Form nhập liệu -->
+        <div class="top-panel">
+            <div class="form-container">
+                <div class="form-group"><label>MS Number Structure</label><input type="text" id="msNumber" placeholder="N100"></div>
+                <div class="form-group"><label>Campaign</label><input type="text" id="campaign" placeholder="DCU"></div>
+                <div class="form-group"><label>Product Name</label><input type="text" id="productName" placeholder="SP1000"></div>
+                <div class="form-group"><label>FY</label><input type="text" id="fy" placeholder="Year"></div>
+                <div class="form-group"><label>Asset Type</label><input type="text" id="assetType" list="assetTypeOptions" placeholder="e.g., Brochure, Powerpoint..."></div>
+                <div class="form-group"><label>Size/Format</label><input type="text" id="sizeFormat" placeholder="A4"></div>
+                <div class="form-group"><label>Specs</label><input type="text" id="specs" placeholder="Industry"></div>
+                <div class="form-group"><label>Variation</label><input type="text" id="variation" placeholder="V1"></div>
+                <div class="form-group"><label>Language-Country</label><input type="text" id="languageCountry" placeholder="EN-US"></div>
+                <datalist id="assetTypeOptions"></datalist>
+            </div>
+        </div>
+        <!-- Panel dưới: Các tab -->
+        <div class="bottom-panel">
+            <div class="tabs-container">
+                <div class="tabs-header">
+                    <button class="tab-button active" data-tab="names">Generated Names</button>
+                    <button class="tab-button" data-tab="languages">Language Codes</button>
+                </div>
+                <div class="tab-content active" id="namesTab">
+                    <div class="generated-list">
+                        <div class="list-header">
+                            <span>Generated Names</span>
+                            <span id="clearListButton" class="clear-icon" title="Clear all names"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></span>
+                        </div>
+                        <div class="names-container" id="namesList"></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="languagesTab">
+                    <div class="language-controls"><input type="text" class="search-input" id="languageSearch" placeholder="Search languages..."></div>
+                    <div class="language-table-container">
+                        <table class="language-table">
+                            <thead>
+                                <tr>
+                                    <th data-column="code">Code <span class="sort-arrow"></span></th>
+                                    <th data-column="language">Language <span class="sort-arrow"></span></th>
+                                    <th data-column="country">Country <span class="sort-arrow"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="languageTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="main.js"></script>
+</body>
+</html>
